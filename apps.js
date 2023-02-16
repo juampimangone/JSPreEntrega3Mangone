@@ -1,42 +1,13 @@
 document.addEventListener('DOMContentLoaded', () => {
 
     // Variables
-    /*const baseDeDatos = [
-        {
-            id: 1,
-            nombre: 'Ibiza Blanco Matte',
-            precio: 1350,
-            imagen: './img/IMG IBIZA.jpg'
-        },
-        {
-            id: 2,
-            nombre: 'Mallorca',
-            precio: 1190,
-            imagen: './img/IMG MALLORCA.jpg'
-        },
-        {
-            id: 3,
-            nombre: 'Marbella Plata',
-            precio: 2500,
-            imagen: './img/IMG MARBELLA.jpg'
-        },
-        {
-            id: 4,
-            nombre: 'Toronto',
-            precio: 1650,
-            imagen: './img/IMG TORONTO.jpg'
-        }
-
-    ];
-
-    console.log(baseDeDatos)*/
 
     let baseDeDatos =[];
     
     async function traerBaseDeDatos(){
             await fetch('baseDeDatos.json')
                     .then((response) => response.json())
-                    .then((data) => baseDeDatos = data);
+                    .then((data) => baseDeDatos = data)
     }
 
 
@@ -46,6 +17,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const DOMcarrito = document.querySelector('#carrito');
     const DOMtotal = document.querySelector('#total');
     const DOMbotonVaciar = document.querySelector('#boton-vaciar');
+    const DOMbotonConfirmar = document.querySelector('#boton-confirmar');
     const miLocalStorage = window.localStorage;
 
     // Funciones
@@ -54,40 +26,40 @@ document.addEventListener('DOMContentLoaded', () => {
     * Dibuja todos los productos a partir de la base de datos.
     */
     async function renderizarProductos() {
-        await traerBaseDeDatos() 
-                .then(baseDeDatos.forEach((info) => {
-            // Estructura
-            const miNodo = document.createElement('div');
-            miNodo.classList.add('card', 'col-sm-3');
-            // Body
-            const miNodoCardBody = document.createElement('div');
-            miNodoCardBody.classList.add('card-body');
-            // Titulo
-            const miNodoTitle = document.createElement('h5');
-            miNodoTitle.classList.add('card-title');
-            miNodoTitle.textContent = info.nombre;
-            // Imagen
-            const miNodoImagen = document.createElement('img');
-            miNodoImagen.classList.add('img-fluid');
-            miNodoImagen.setAttribute('src', info.imagen);
-            // Precio
-            const miNodoPrecio = document.createElement('p');
-            miNodoPrecio.classList.add('card-text');
-            miNodoPrecio.textContent = `${divisa}${info.precio}`;
-            // Boton 
-            const miNodoBoton = document.createElement('button');
-            miNodoBoton.classList.add('btn', 'btn-dark');
-            miNodoBoton.textContent = '+';
-            miNodoBoton.setAttribute('marcador', info.id);
-            miNodoBoton.addEventListener('click', añadirProductoAlCarrito);
-            // Insertamos
-            miNodoCardBody.appendChild(miNodoImagen);
-            miNodoCardBody.appendChild(miNodoTitle);
-            miNodoCardBody.appendChild(miNodoPrecio);
-            miNodoCardBody.appendChild(miNodoBoton);
-            miNodo.appendChild(miNodoCardBody);
-            DOMitems.appendChild(miNodo);
-        }));
+        await traerBaseDeDatos();
+        baseDeDatos.forEach((info) => {
+        // Estructura
+        const miNodo = document.createElement('div');
+        miNodo.classList.add('card', 'col-sm-3');
+        // Body
+        const miNodoCardBody = document.createElement('div');
+        miNodoCardBody.classList.add('card-body');
+        // Titulo
+        const miNodoTitle = document.createElement('h5');
+        miNodoTitle.classList.add('card-title');
+        miNodoTitle.textContent = info.nombre;
+        // Imagen
+        const miNodoImagen = document.createElement('img');
+        miNodoImagen.classList.add('img-fluid');
+        miNodoImagen.setAttribute('src', info.imagen);
+        // Precio
+        const miNodoPrecio = document.createElement('p');
+        miNodoPrecio.classList.add('card-text');
+        miNodoPrecio.textContent = `${divisa}${info.precio}`;
+        // Boton 
+        const miNodoBoton = document.createElement('button');
+        miNodoBoton.classList.add('btn', 'btn-dark');
+        miNodoBoton.textContent = '+';
+        miNodoBoton.setAttribute('marcador', info.id);
+        miNodoBoton.addEventListener('click', añadirProductoAlCarrito);
+        // Insertamos
+        miNodoCardBody.appendChild(miNodoImagen);
+        miNodoCardBody.appendChild(miNodoTitle);
+        miNodoCardBody.appendChild(miNodoPrecio);
+        miNodoCardBody.appendChild(miNodoBoton);
+        miNodo.appendChild(miNodoCardBody);
+        DOMitems.appendChild(miNodo);
+        });
     }
 
     /**
@@ -186,6 +158,27 @@ document.addEventListener('DOMContentLoaded', () => {
 
     }
 
+    /*Confirma la compra del carrito*/
+
+    function confirmarCompra() {
+        // Limpiamos los productos guardados
+        if (carrito.length > 0){
+            Swal.fire(
+                'La compra se ha realizado con éxito, muchas gracias !',
+                'Esperemos verte pronto nuevamente !',
+                'success'
+                )
+            vaciarCarrito();
+        }
+        else{
+            Swal.fire(
+                'Error',
+                'Por favor ! Seleccione sus productos antes de confirmar su compra !',
+                'error',
+                )
+        }
+    }
+
     function guardarCarritoEnLocalStorage () {
         miLocalStorage.setItem('carrito', JSON.stringify(carrito));
     }
@@ -200,6 +193,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Eventos
     DOMbotonVaciar.addEventListener('click', vaciarCarrito);
+
+    DOMbotonConfirmar.addEventListener('click', confirmarCompra);
+    
 
     // Inicio
     cargarCarritoDeLocalStorage();
