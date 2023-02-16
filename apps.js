@@ -1,7 +1,7 @@
 document.addEventListener('DOMContentLoaded', () => {
 
     // Variables
-    const baseDeDatos = [
+    /*const baseDeDatos = [
         {
             id: 1,
             nombre: 'Ibiza Blanco Matte',
@@ -29,6 +29,17 @@ document.addEventListener('DOMContentLoaded', () => {
 
     ];
 
+    console.log(baseDeDatos)*/
+
+    let baseDeDatos =[];
+    
+    async function traerBaseDeDatos(){
+            await fetch('baseDeDatos.json')
+                    .then((response) => response.json())
+                    .then((data) => baseDeDatos = data);
+    }
+
+
     let carrito = [];
     const divisa = '$';
     const DOMitems = document.querySelector('#items');
@@ -42,8 +53,9 @@ document.addEventListener('DOMContentLoaded', () => {
     /**
     * Dibuja todos los productos a partir de la base de datos.
     */
-    function renderizarProductos() {
-        baseDeDatos.forEach((info) => {
+    async function renderizarProductos() {
+        await traerBaseDeDatos() 
+                .then(baseDeDatos.forEach((info) => {
             // Estructura
             const miNodo = document.createElement('div');
             miNodo.classList.add('card', 'col-sm-3');
@@ -75,7 +87,7 @@ document.addEventListener('DOMContentLoaded', () => {
             miNodoCardBody.appendChild(miNodoBoton);
             miNodo.appendChild(miNodoCardBody);
             DOMitems.appendChild(miNodo);
-        });
+        }));
     }
 
     /**

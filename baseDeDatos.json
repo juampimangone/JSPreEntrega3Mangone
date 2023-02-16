@@ -1,0 +1,26 @@
+[
+    {
+        "id": 1,
+        "nombre": "Ibiza Blanco Matte",
+        "precio": 1350,
+        "imagen": "./img/IMG IBIZA.jpg"
+    },
+    {
+        "id": 2,
+        "nombre": "Mallorca",
+        "precio": 1190,
+        "imagen": "./img/IMG MALLORCA.jpg"
+    },
+    {
+        "id": 3,
+        "nombre": "Marbella Plata",
+        "precio": 2500,
+        "imagen": "./img/IMG MARBELLA.jpg"
+    },
+    {
+        "id": 4,
+        "nombre": "Toronto",
+        "precio": 1650,
+        "imagen": "./img/IMG TORONTO.jpg"
+    }
+]
